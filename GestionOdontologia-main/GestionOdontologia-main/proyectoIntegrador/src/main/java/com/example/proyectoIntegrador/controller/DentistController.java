@@ -44,7 +44,7 @@ public class DentistController {
     public ResponseEntity<String> create(@RequestBody Dentist d){
         try{
             service.create(d);
-            return new ResponseEntity<>("Se registro el odontologo",HttpStatus.CREATED);
+            return new ResponseEntity<>("Dentist Registered Successfully",HttpStatus.CREATED);
 
         }catch (Exception e){
             return ResponseEntity.badRequest().build();
@@ -57,7 +57,7 @@ public class DentistController {
 
         try{
             service.update(d);
-            return new ResponseEntity<>("Se modifico el odontologo",HttpStatus.OK);
+            return new ResponseEntity<>("Dentist Modified Successfully",HttpStatus.OK);
 
         }catch (Exception e){
             return ResponseEntity.badRequest().build();
@@ -69,7 +69,7 @@ public class DentistController {
     public ResponseEntity<String> deleteById(@PathVariable Long id ){
         try{
             service.deleteById(id);
-            return new ResponseEntity<>("Se elimino el odontologo",HttpStatus.OK);
+            return new ResponseEntity<>("Dentist Deleted Successfully",HttpStatus.OK);
 
         }catch (Exception e){
             return ResponseEntity.badRequest().build();
