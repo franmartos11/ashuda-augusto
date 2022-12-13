@@ -68,7 +68,7 @@ class UserServiceTest {
     @DisplayName("WHEN bring user byId THEN throws UserNotFoundException")
     public void getByIdUserException(){
         given(repository.findById(anyLong())).willReturn(Optional.empty());
-        assertThrows(UserNotFoundException.class,()->service.getById(2L));
+        assertThrows(UserNotFoundException.class,()->service.getById(2F));
 
     }
 

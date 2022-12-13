@@ -3,14 +3,15 @@ package com.example.proyectoIntegrador.service;
 import com.example.proyectoIntegrador.exception.*;
 import com.example.proyectoIntegrador.model.Patient;
 import com.example.proyectoIntegrador.repository.PatientRepo;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-
 
 import java.time.LocalDate;
 import java.util.Collections;
@@ -19,6 +20,7 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
@@ -26,115 +28,114 @@ import static org.mockito.BDDMockito.given;
 
 @ExtendWith(MockitoExtension.class)
 class PatientServiceTest {
+
     @Mock
     private PatientRepo repository;
+
     @InjectMocks
     private PatientService service;
     private Patient patient;
+
     @BeforeEach
     void setUp(){
-        patient = new Patient(1L,"Facundo","Burgos","123456789", LocalDate.now(),"San juan 120",null);
+        patient = new Patient(2F,"Francisco","Martos","43555555", LocalDate.now(),"Ohiggins 2000",null);
+
     }
 
     @Test
-    @DisplayName("WHEN we list all the patients THEN don´t throws any exception")
+    @DisplayName("WHEN patients are listed THEN doesnt throw exception")
     public void getAllPatients(){
-        //GIVEN
         given(repository.findAll()).willReturn(List.of(patient));
-        //WHEN AND THEN
         assertDoesNotThrow(()->service.getAll());
+
     }
+
     @Test
-    @DisplayName("WHEN we list all patients but none exists anyone THEN it throws PatientNoContentException")
+    @DisplayName("WHEN patients try to be listed but doent exists THEN throw PatientNoContentException")
     public void getAllPatientsException(){
-        //GIVEN
         given(repository.findAll()).willReturn(Collections.emptyList());
-        //WHEN AND THEN
         assertThrows(PatientNoContentException.class,()->service.getAll());
+
     }
 
     @Test
-    @DisplayName("WHEN we bring a patient by id THEN don´t throws any exception")
+    @DisplayName("WHEN patient findById THEN doesnt throw exception")
     public void getByIdPatient(){
-        //GIVEN
         given(repository.findById(anyLong())).willReturn(Optional.of(patient));
-        //WHEN AND THEN
-        assertDoesNotThrow(()->service.getById(1L));
+        assertDoesNotThrow(()->service.getById(2F));
+
     }
+
     @Test
-    @DisplayName("WHEN we bring a patient by id THEN it throws PatientNotFoundException")
+    @DisplayName("WHEN patient findById THEN throw PatientNotFoundException")
     public void getByIdPatientException(){
-        //GIVEN
         given(repository.findById(anyLong())).willReturn(Optional.empty());
-        //WHEN AND THEN
-        assertThrows(PatientNotFoundException.class,()->service.getById(1L));
+        assertThrows(PatientNotFoundException.class,()->service.getById(2F));
+
     }
 
     @Test
-    @DisplayName("WHEN we bring a patient by dni THEN don´t throws any exception")
+    @DisplayName("WHEN patient findByDni THEN doesnt throw exception")
     public void getByDniPatient(){
-        //GIVEN
         given(repository.findByDni(anyString())).willReturn(Optional.of(patient));
-        //WHEN AND THEN
-        assertDoesNotThrow(()->service.getByDni("123456789"));
+        assertDoesNotThrow(()->service.getByDni("43555555"));
+
     }
+
     @Test
-    @DisplayName("WHEN we bring a patient by dni THEN it throws PatientNotFoundException")
+    @DisplayName("WHEN patient findByDni THEN throw PatientNotFoundException")
     public void getByDniPatientException(){
-        //GIVEN
         given(repository.findByDni(anyString())).willReturn(Optional.empty());
-        //WHEN AND THEN
-        assertThrows(PatientNotFoundException.class,()->service.getByDni("123456789"));
+        assertThrows(PatientNotFoundException.class,()->service.getByDni("43555555"));
+
     }
 
     @Test
-    @DisplayName("WHEN we create a patient then don´t throws any exception")
+    @DisplayName("WHEN patient is created THEN doesnt throw exception")
     public void createPatient(){
-        //GIVEN
         given(repository.findByDni(anyString())).willReturn(Optional.empty());
-        //WHEN AND THEN
         assertDoesNotThrow(()->service.create(patient));
+
     }
+
     @Test
-    @DisplayName("WHEN we create a patient with the repeated dni then it throws BadRequestException")
+    @DisplayName("WHEN patient is created with a repeated dni THEN throw BadRequestException")
     public void createPatientException(){
-        //GIVEN
         given(repository.findByDni(anyString())).willReturn(Optional.of(patient));
-        //WHEN AND THEN
         assertThrows(BadRequestException.class,()->service.create(patient));
+
     }
 
     @Test
-    @DisplayName("WHEN we update a patient then don´t throws any exception")
+    @DisplayName("WHEN patient is updated THEN doesnt throw exception")
     public void updatePatient(){
-        //GIVEN
         given(repository.findById(anyLong())).willReturn(Optional.of(patient));
-        //WHEN AND THEN
         assertDoesNotThrow(()->service.update(patient));
-    }
-    @Test
-    @DisplayName("WHEN we update a patient that not exists then it throws PatientNotFoundException")
-    public void updatePatientException(){
-        //GIVEN
-        given(repository.findById(anyLong())).willReturn(Optional.empty());
-        //WHEN AND THEN
-        assertThrows(PatientNotFoundException.class,()->service.update(patient));
+
     }
 
     @Test
-    @DisplayName("WHEN we delete patient THEN don´t throws any exception")
-    public void deleteByIdPatient(){
-        //GIVEN
-        given(repository.findById(anyLong())).willReturn(Optional.of(patient));
-        //WHEN AND THEN
-        assertDoesNotThrow(()->service.deleteById(1L));
-    }
-    @Test
-    @DisplayName("WHEN we delete patient that is not present in the db THEN it throws PatientNotFoundException")
-    public void deleteByIdPatientException(){
-        //GIVEN
+    @DisplayName("WHEN patient non created is updated THEN throw PatientNotFoundException")
+    public void updatePatientException(){
         given(repository.findById(anyLong())).willReturn(Optional.empty());
-        //WHEN AND THEN
-        assertThrows(PatientNotFoundException.class,()-> service.deleteById(5L));
+        assertThrows(PatientNotFoundException.class,()->service.update(patient));
+
     }
+
+    @Test
+    @DisplayName("WHEN  patient is deleted THEN doesnt throw exception")
+    public void deleteByIdPatient(){
+        given(repository.findById(anyLong())).willReturn(Optional.of(patient));
+        assertDoesNotThrow(()->service.deleteById(2F));
+
+    }
+
+    @Test
+    @DisplayName("WHEN patient thats not in db is deleted THEN throw PatientNotFoundException")
+    public void deleteByIdPatientException(){
+        given(repository.findById(anyLong())).willReturn(Optional.empty());
+        assertThrows(PatientNotFoundException.class,()-> service.deleteById(3E));
+
+    }
+
 }

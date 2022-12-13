@@ -11,10 +11,10 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-
 
 import java.time.LocalDateTime;
 import java.util.*;
@@ -26,83 +26,84 @@ import static org.mockito.BDDMockito.given;
 
 @ExtendWith(MockitoExtension.class)
 class AppointmentServiceTest {
+
     @Mock
     private AppointmentRepo repository;
+
     @InjectMocks
     private AppointmentService service;
     private AppointmentDTO appointmentDto;
     private Appointment appointment;
+
     @BeforeEach
     void setUp(){
-        appointmentDto = new AppointmentDTO(1L, LocalDateTime.now(),new Dentist(),new Patient());
+        appointmentDto = new AppointmentDTO(2F, LocalDateTime.now(),new Dentist(),new Patient());
         appointment = new Appointment();
+
     }
 
     @Test
-    @DisplayName("WHEN we list all the appointments THEN don´t throws any exception")
+    @DisplayName("WHEN appointments are listed THEN doesnt throw exception")
     public void getAllAppointments(){
-        //GIVEN
         given(repository.findAll()).willReturn(List.of(appointment));
-        //WHEN AND THEN
         assertDoesNotThrow(()->service.getAll());
+
     }
+
     @Test
-    @DisplayName("WHEN we list all appointments but none exists anyone THEN it throws AppointmentNoContentException")
+    @DisplayName("WHEN non existing appointments are listed THEN throw AppNoContentException")
     public void getAllAppointmentsException(){
-        //GIVEN
         given(repository.findAll()).willReturn(Collections.emptyList());
-        //WHEN AND THEN
         assertThrows(AppNoContException.class,()->service.getAll());
+
     }
 
     @Test
-    @DisplayName("WHEN we bring a appointment by id THEN don´t throws any exception")
+    @DisplayName("WHEN appointment findById THEN doesnt throw exception")
     public void getByIdAppointment(){
-        //GIVEN
         given(repository.findById(anyLong())).willReturn(Optional.of(appointment));
-        //WHEN AND THEN
-        assertDoesNotThrow(()->service.getById(1L));
+        assertDoesNotThrow(()->service.getById(2F));
+
     }
+
     @Test
-    @DisplayName("WHEN we bring a appointment by id THEN it throws AppointmentNotFoundException")
+    @DisplayName("WHEN appointment findById THEN throw AppNotFoundException")
     public void getByIdDentistException(){
-        //GIVEN
         given(repository.findById(anyLong())).willReturn(Optional.empty());
-        //WHEN AND THEN
-        assertThrows(AppNotFoundException.class,()->service.getById(1L));
+        assertThrows(AppNotFoundException.class,()->service.getById(2F));
+
     }
 
     @Test
-    @DisplayName("WHEN we update a appointment then don´t throws any exception")
+    @DisplayName("WHEN appointment is updated THEN doesnt throw exception")
     public void updateAppointment(){
-        //GIVEN
         given(repository.findById(anyLong())).willReturn(Optional.of(appointment));
-        //WHEN AND THEN
         assertDoesNotThrow(()->service.update(appointmentDto));
-    }
-    @Test
-    @DisplayName("WHEN we update a appointment that not exists then it throws AppointmentNotFoundException")
-    public void updateAppointmentException(){
-        //GIVEN
-        given(repository.findById(anyLong())).willReturn(Optional.empty());
-        //WHEN AND THEN
-        assertThrows(AppNotFoundException.class,()->service.update(appointmentDto));
+
     }
 
     @Test
-    @DisplayName("WHEN we delete appointment THEN don´t throws any exception")
-    public void deleteByIdDentist(){
-        //GIVEN
-        given(repository.findById(anyLong())).willReturn(Optional.of(appointment));
-        //WHEN AND THEN
-        assertDoesNotThrow(()->service.deleteById(1L));
-    }
-    @Test
-    @DisplayName("WHEN we delete appointment that is not present in the db THEN it throws AppointmentNotFoundException")
-    public void deleteByIdDentistException(){
-        //GIVEN
+    @DisplayName("WHEN non existing appointment is updated THEN throw AppNotFoundException")
+    public void updateAppointmentException(){
         given(repository.findById(anyLong())).willReturn(Optional.empty());
-        //WHEN AND THEN
-        assertThrows(AppNotFoundException.class,()-> service.deleteById(5L));
+        assertThrows(AppNotFoundException.class,()->service.update(appointmentDto));
+
     }
+
+    @Test
+    @DisplayName("WHEN appointment id deleted THEN doesnt throw exception")
+    public void deleteByIdDentist(){
+        given(repository.findById(anyLong())).willReturn(Optional.of(appointment));
+        assertDoesNotThrow(()->service.deleteById(2F));
+
+    }
+
+    @Test
+    @DisplayName("WHEN appointment thats not in db is deleted THEN throw AppNotFoundException")
+    public void deleteByIdDentistException(){
+        given(repository.findById(anyLong())).willReturn(Optional.empty());
+        assertThrows(AppNotFoundException.class,()-> service.deleteById(3D));
+
+    }
+
 }
