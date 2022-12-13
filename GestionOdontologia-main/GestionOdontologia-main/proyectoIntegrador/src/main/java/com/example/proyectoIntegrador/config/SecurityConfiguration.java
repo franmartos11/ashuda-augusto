@@ -2,9 +2,11 @@ package com.example.proyectoIntegrador.config;
 
 import com.example.proyectoIntegrador.config.jwt.JwtRequestFilter;
 import com.example.proyectoIntegrador.service.UserService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -16,26 +18,29 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @Configuration
 @EnableWebSecurity
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
+
     @Autowired
-    private UserService userService;
+    private UserService us;
+
     @Autowired
     private JwtRequestFilter jwtRequestFilter;
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userService);
+        auth.userDetailsService(us);
+
     }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+
         http.authorizeRequests()
                 .antMatchers("/patients/*","/dentists/*")
-                .hasAuthority("ADMIN");
+                .hasAuthority("ADMIN_ROL");
 
         http.authorizeRequests()
                 .antMatchers("/appointments/*")
-                .hasAuthority("USER");
-
+                .hasAuthority("USER_ROL");
 
         http.authorizeRequests()
                 .antMatchers("/register")
@@ -49,12 +54,14 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
         http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
+
     }
 
     @Override
     @Bean
     public AuthenticationManager authenticationManagerBean() throws Exception {
         return super.authenticationManagerBean();
+
     }
 
 }

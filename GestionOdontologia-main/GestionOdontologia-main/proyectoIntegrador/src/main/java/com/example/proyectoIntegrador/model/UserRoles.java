@@ -1,6 +1,6 @@
 package com.example.proyectoIntegrador.model;
 
 public enum UserRoles {
-    USER,
-    ADMIN
+    USER_ROL,
+    ADMIN_ROL
 }
