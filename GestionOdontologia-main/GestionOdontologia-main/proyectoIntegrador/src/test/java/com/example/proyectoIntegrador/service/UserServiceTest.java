@@ -1,17 +1,17 @@
 package com.example.proyectoIntegrador.service;
 
-
 import com.example.proyectoIntegrador.exception.*;
 import com.example.proyectoIntegrador.repository.UserRepo;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-
 
 import java.util.Collections;
 import java.util.List;
@@ -26,116 +26,114 @@ import static org.mockito.BDDMockito.given;
 
 @ExtendWith(MockitoExtension.class)
 class UserServiceTest {
+
     @Mock
     private UserRepo repository;
     @InjectMocks
+
     private UserService service;
     private User user;
 
     @BeforeEach
     void setUp(){
-        user = new User(1L,"Facundo","facundo@gmail.com","1111",ADMIN);
+        user = new User(2F,"Francisco","franmartos11@gmail.com","FranMartos",ADMIN_ROL);
+
     }
 
     @Test
-    @DisplayName("WHEN we list all the user THEN don´t throws any exception")
+    @DisplayName("WHEN list users THEN doesnt throw UserNoContentException")
     public void getAllUser(){
-        //GIVEN
         given(repository.findAll()).willReturn(List.of(user));
-        //WHEN AND THEN
         assertDoesNotThrow(()->service.getAll());
+
     }
+
     @Test
-    @DisplayName("WHEN we list all user but none exists anyone THEN it throws AppUserNoContentException")
+    @DisplayName("WHEN  list users BUT doent exist THEN throws UserNoContentException")
     public void getAllUsersException(){
-        //GIVEN
         given(repository.findAll()).willReturn(Collections.emptyList());
-        //WHEN AND THEN
         assertThrows(UserNoContException.class,()->service.getAll());
+
     }
 
     @Test
-    @DisplayName("WHEN we bring a user by id THEN don´t throws any exception")
+    @DisplayName("WHEN bring user byId THEN doesnt throw UserNotFoundException")
     public void getByIdUser(){
-        //GIVEN
         given(repository.findById(anyLong())).willReturn(Optional.of(user));
-        //WHEN AND THEN
-        assertDoesNotThrow(()->service.getById(1L));
+        assertDoesNotThrow(()->service.getById(2F));
+
     }
+
     @Test
-    @DisplayName("WHEN we bring a user by id THEN it throws AppUserNotFoundException")
+    @DisplayName("WHEN bring user byId THEN throws UserNotFoundException")
     public void getByIdUserException(){
-        //GIVEN
         given(repository.findById(anyLong())).willReturn(Optional.empty());
-        //WHEN AND THEN
-        assertThrows(UserNotFoundException.class,()->service.getById(1L));
+        assertThrows(UserNotFoundException.class,()->service.getById(2L));
+
     }
 
     @Test
-    @DisplayName("WHEN we create a user then don´t throws any exception")
+    @DisplayName("WHEN user is created THEN doent throw exception")
     public void createUser(){
-        //GIVEN
         given(repository.findByEmail(anyString())).willReturn(Optional.empty());
-        //WHEN AND THEN
         assertDoesNotThrow(()->service.create(user));
+
     }
+
     @Test
-    @DisplayName("WHEN we create a user with the repeated dni then it throws BadRequestException")
+    @DisplayName("WHEN user is created with repeated dni THEN throws BadRequestException")
     public void createUserException(){
-        //GIVEN
         given(repository.findByEmail(anyString())).willReturn(Optional.of(user));
-        //WHEN AND THEN
         assertThrows(BadRequestException.class,()->service.create(user));
+
     }
 
     @Test
-    @DisplayName("WHEN we update a user then don´t throws any exception")
+    @DisplayName("WHEN user is updated THEN doesnt throws exception")
     public void updateUser(){
-        //GIVEN
         given(repository.findById(anyLong())).willReturn(Optional.of(user));
-        //WHEN AND THEN
         assertDoesNotThrow(()->service.update(user));
+
     }
+
     @Test
-    @DisplayName("WHEN we update a user that not exists then it throws AppUserNotFoundException")
+    @DisplayName("WHEN non created user tries to update THEN throws UserNotFoundException")
     public void updateUserException(){
-        //GIVEN
         given(repository.findById(anyLong())).willReturn(Optional.empty());
-        //WHEN AND THEN
         assertThrows(UserNotFoundException.class,()->service.update(user));
+
     }
+
     @Test
-    @DisplayName("WHEN we delete user THEN don´t throws any exception")
+    @DisplayName("WHEN user is deleted THEN doesnt throw exception")
     public void deleteByIdUser(){
-        //GIVEN
         given(repository.findById(anyLong())).willReturn(Optional.of(user));
-        //WHEN AND THEN
-        assertDoesNotThrow(()->service.deleteById(1L));
+        assertDoesNotThrow(()->service.deleteById(2F));
+
     }
+
     @Test
-    @DisplayName("WHEN we delete user that is not present in the db THEN it throws AppUserNotFoundException")
+    @DisplayName("WHEN user thats not in db is deleted THEN throw UserNotFoundException")
     public void deleteByIdUserException(){
-        //GIVEN
         given(repository.findById(anyLong())).willReturn(Optional.empty());
-        //WHEN AND THEN
-        assertThrows(UserNotFoundException.class,()-> service.deleteById(5L));
+        assertThrows(UserNotFoundException.class,()-> service.deleteById(2E));
+
     }
 
     @Test
-    @DisplayName("WHEN we find user by email THEN don´t throws any exception")
+    @DisplayName("WHEN user findbyEmail THEN doesnt throw exception")
     public void findByEmail(){
-        //GIVEN
         given(repository.findByEmail(anyString())).willReturn(Optional.of(user));
-        //WHEN AND THEN
-        assertDoesNotThrow(()->service.loadUserByUsername("facundo@gmail.com"));
+        assertDoesNotThrow(()->service.loadUserByUsername("franmartos11@gmail.com"));
+
     }
 
     @Test
-    @DisplayName("WHEN we find user by email THEN throws UsernameNotFoundException")
+    @DisplayName("WHEN user findbyEmail with no name THEN throws UsernameNotFoundException")
     public void findByEmailException(){
-        //GIVEN
         given(repository.findByEmail(anyString())).willReturn(Optional.empty());
-        //WHEN AND THEN
-        assertThrows(UsernameNotFoundException.class,()->service.loadUserByUsername("facundo@gmail.com"));
+        assertThrows(UsernameNotFoundException.class,()->service.loadUserByUsername("franmartos11@gmail.com"));
+
     }
+
 }
