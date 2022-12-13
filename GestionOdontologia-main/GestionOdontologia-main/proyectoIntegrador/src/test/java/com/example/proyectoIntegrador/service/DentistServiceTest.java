@@ -1,7 +1,7 @@
 package com.example.proyectoIntegrador.service;
 
 import com.example.proyectoIntegrador.exception.BadRequestException;
-import com.example.proyectoIntegrador.exception.DentistNoContentException;
+import com.example.proyectoIntegrador.exception.DentistNoContException;
 import com.example.proyectoIntegrador.exception.DentistNotFoundException;
 import com.example.proyectoIntegrador.model.Dentist;
 import com.example.proyectoIntegrador.repository.DentistRepo;
@@ -48,7 +48,7 @@ class DentistServiceTest {
         //GIVEN
         given(repository.findAll()).willReturn(Collections.emptyList());
         //WHEN AND THEN
-        assertThrows(DentistNoContentException.class,()->service.getAll());
+        assertThrows(DentistNoContException.class,()->service.getAll());
     }
 
     @Test

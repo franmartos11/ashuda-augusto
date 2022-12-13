@@ -22,17 +22,17 @@ public class UserService implements UserDetailsService {
     private final UserRepo repository;
     private final BCryptPasswordEncoder passwordEncoder;
 
-    public List<User> getAll() throws AppUserNoContentException {
+    public List<User> getAll() throws UserNoContException {
 
         if(repository.findAll().isEmpty())
-            throw new AppUserNoContentException();
+            throw new UserNoContException();
         return repository.findAll();
 
     }
 
-    public User getById(Long id) throws AppUserNotFoundException {
+    public User getById(Long id) throws UserNotFoundException {
 
-        return repository.findById(id).orElseThrow(AppUserNotFoundException::new);
+        return repository.findById(id).orElseThrow(UserNotFoundException::new);
 
     }
 
@@ -48,16 +48,16 @@ public class UserService implements UserDetailsService {
 
     }
 
-    public void update(User u) throws AppUserNotFoundException {
+    public void update(User u) throws UserNotFoundException {
 
-        if(repository.findById(u.getId()).isEmpty()) throw new AppUserNotFoundException();
+        if(repository.findById(u.getId()).isEmpty()) throw new UserNotFoundException();
         repository.save(u);
 
     }
 
-    public void deleteById(Long id) throws AppUserNotFoundException {
+    public void deleteById(Long id) throws UserNotFoundException {
 
-        if(repository.findById(id).isEmpty()) throw new AppUserNotFoundException();
+        if(repository.findById(id).isEmpty()) throw new UserNotFoundException();
         repository.deleteById(id);
 
     }

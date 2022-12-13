@@ -52,7 +52,7 @@ class AppointmentServiceTest {
         //GIVEN
         given(repository.findAll()).willReturn(Collections.emptyList());
         //WHEN AND THEN
-        assertThrows(AppointmentNotContentException.class,()->service.getAll());
+        assertThrows(AppNoContException.class,()->service.getAll());
     }
 
     @Test
@@ -69,7 +69,7 @@ class AppointmentServiceTest {
         //GIVEN
         given(repository.findById(anyLong())).willReturn(Optional.empty());
         //WHEN AND THEN
-        assertThrows(AppointmentNotFoundException.class,()->service.getById(1L));
+        assertThrows(AppNotFoundException.class,()->service.getById(1L));
     }
 
     @Test
@@ -86,7 +86,7 @@ class AppointmentServiceTest {
         //GIVEN
         given(repository.findById(anyLong())).willReturn(Optional.empty());
         //WHEN AND THEN
-        assertThrows(AppointmentNotFoundException.class,()->service.update(appointmentDto));
+        assertThrows(AppNotFoundException.class,()->service.update(appointmentDto));
     }
 
     @Test
@@ -103,6 +103,6 @@ class AppointmentServiceTest {
         //GIVEN
         given(repository.findById(anyLong())).willReturn(Optional.empty());
         //WHEN AND THEN
-        assertThrows(AppointmentNotFoundException.class,()-> service.deleteById(5L));
+        assertThrows(AppNotFoundException.class,()-> service.deleteById(5L));
     }
 }

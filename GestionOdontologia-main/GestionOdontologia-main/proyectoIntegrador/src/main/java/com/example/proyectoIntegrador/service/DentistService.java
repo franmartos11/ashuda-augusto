@@ -1,7 +1,7 @@
 package com.example.proyectoIntegrador.service;
 
 import com.example.proyectoIntegrador.exception.BadRequestException;
-import com.example.proyectoIntegrador.exception.DentistNoContentException;
+import com.example.proyectoIntegrador.exception.DentistNoContException;
 import com.example.proyectoIntegrador.exception.DentistNotFoundException;
 
 import com.example.proyectoIntegrador.model.Dentist;
@@ -18,10 +18,10 @@ public class DentistService {
 
     private final DentistRepo repository;
 
-    public List<Dentist> getAll() throws DentistNoContentException {
+    public List<Dentist> getAll() throws DentistNoContException {
 
         if(repository.findAll().isEmpty())
-            throw new DentistNoContentException();
+            throw new DentistNoContException();
         return repository.findAll();
 
     }

@@ -1,6 +1,6 @@
 package com.example.proyectoIntegrador.controller;
 
-import com.example.proyectoIntegrador.exception.DentistNoContentException;
+import com.example.proyectoIntegrador.exception.DentistNoContException;
 import com.example.proyectoIntegrador.exception.DentistNotFoundException;
 import com.example.proyectoIntegrador.model.Dentist;
 import com.example.proyectoIntegrador.service.DentistService;
@@ -23,7 +23,7 @@ public class DentistController {
     private final DentistService service;
 
     @GetMapping("/all")
-    public ResponseEntity<List<Dentist>> getAll() throws DentistNoContentException {
+    public ResponseEntity<List<Dentist>> getAll() throws DentistNoContException {
         return ResponseEntity.ok(service.getAll());
 
     }

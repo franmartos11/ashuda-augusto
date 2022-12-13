@@ -30,13 +30,13 @@ public class UserController {
     private JwtUtil jwtUtil;
 
     @GetMapping("/all")
-    public ResponseEntity<List<User>> getAll() throws AppUserNoContentException {
+    public ResponseEntity<List<User>> getAll() throws UserNoContException {
         return ResponseEntity.ok(service.getAll());
 
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<User> getById(@PathVariable Long id) throws AppUserNotFoundException {
+    public ResponseEntity<User> getById(@PathVariable Long id) throws UserNotFoundException {
         return ResponseEntity.ok(service.getById(id));
 
     }

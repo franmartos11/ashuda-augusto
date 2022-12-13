@@ -1,7 +1,7 @@
 package com.example.proyectoIntegrador.service;
 
-import com.example.proyectoIntegrador.exception.AppointmentNotContentException;
-import com.example.proyectoIntegrador.exception.AppointmentNotFoundException;
+import com.example.proyectoIntegrador.exception.AppNoContException;
+import com.example.proyectoIntegrador.exception.AppNotFoundException;
 
 import com.example.proyectoIntegrador.model.Appointment;
 import com.example.proyectoIntegrador.model.AppointmentDTO;
@@ -22,12 +22,12 @@ public class AppointmentService {
     private final AppointmentRepo repository;
     ObjectMapper mapper;
 
-    public Set<AppointmentDTO> getAll() throws AppointmentNotContentException {
+    public Set<AppointmentDTO> getAll() throws AppNoContException {
 
         var appointmentList = repository.findAll();
 
         if(appointmentList.isEmpty())
-            throw new AppointmentNotContentException();
+            throw new AppNoContException();
 
         Set<AppointmentDTO> DTOList = new HashSet<>();
         for (Appointment appointment: appointmentList){
@@ -39,11 +39,11 @@ public class AppointmentService {
 
     }
 
-    public AppointmentDTO getById(Long id) throws AppointmentNotFoundException {
+    public AppointmentDTO getById(Long id) throws AppNotFoundException {
         var optional = repository.findById(id);
 
         if (optional.isEmpty())
-            throw new AppointmentNotFoundException();
+            throw new AppNotFoundException();
 
         if (mapper != null)
             return mapper.convertValue(optional,AppointmentDTO.class);
@@ -65,18 +65,18 @@ public class AppointmentService {
         save(dto);
     }
 
-    public void update(AppointmentDTO dto) throws AppointmentNotFoundException {
+    public void update(AppointmentDTO dto) throws AppNotFoundException {
 
         if (repository.findById(dto.id()).isEmpty())
-            throw new AppointmentNotFoundException();
+            throw new AppNotFoundException();
         save(dto);
 
     }
 
-    public void deleteById(Long id) throws AppointmentNotFoundException {
+    public void deleteById(Long id) throws AppNotFoundException {
 
         if (repository.findById(id).isEmpty())
-            throw new AppointmentNotFoundException();
+            throw new AppNotFoundException();
         repository.deleteById(id);
 
     }

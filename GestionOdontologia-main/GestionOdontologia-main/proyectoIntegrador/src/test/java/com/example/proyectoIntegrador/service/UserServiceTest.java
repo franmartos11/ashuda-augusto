@@ -2,7 +2,6 @@ package com.example.proyectoIntegrador.service;
 
 
 import com.example.proyectoIntegrador.exception.*;
-import com.example.proyectoIntegrador.model.*;
 import com.example.proyectoIntegrador.repository.UserRepo;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -52,7 +51,7 @@ class UserServiceTest {
         //GIVEN
         given(repository.findAll()).willReturn(Collections.emptyList());
         //WHEN AND THEN
-        assertThrows(AppUserNoContentException.class,()->service.getAll());
+        assertThrows(UserNoContException.class,()->service.getAll());
     }
 
     @Test
@@ -69,7 +68,7 @@ class UserServiceTest {
         //GIVEN
         given(repository.findById(anyLong())).willReturn(Optional.empty());
         //WHEN AND THEN
-        assertThrows(AppUserNotFoundException.class,()->service.getById(1L));
+        assertThrows(UserNotFoundException.class,()->service.getById(1L));
     }
 
     @Test
@@ -103,7 +102,7 @@ class UserServiceTest {
         //GIVEN
         given(repository.findById(anyLong())).willReturn(Optional.empty());
         //WHEN AND THEN
-        assertThrows(AppUserNotFoundException.class,()->service.update(user));
+        assertThrows(UserNotFoundException.class,()->service.update(user));
     }
     @Test
     @DisplayName("WHEN we delete user THEN don´t throws any exception")
@@ -119,7 +118,7 @@ class UserServiceTest {
         //GIVEN
         given(repository.findById(anyLong())).willReturn(Optional.empty());
         //WHEN AND THEN
-        assertThrows(AppUserNotFoundException.class,()-> service.deleteById(5L));
+        assertThrows(UserNotFoundException.class,()-> service.deleteById(5L));
     }
 
     @Test
