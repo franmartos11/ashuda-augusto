@@ -1,0 +1,38 @@
+#root {
+    margin: 0rem ;
+    padding: 0rem;
+    text-align: center;
+  }
+  body{
+    margin: 0rem;
+  }
+  a {
+    font-weight: 500;
+    color: #646cff;
+    text-decoration: inherit;
+    padding-left: 1rem;
+  }
+  a:hover {
+    color: #ffffff;
+  }
+  nav {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    width: 100%;
+    margin: 0rem;
+    background-color: #050314;
+    
+  }
+ 
+  .table{
+    padding-top: 0.5rem;
+    display: flex;
+    justify-content: center;
+  }
+
+  .table th{
+    padding: 1rem;
+    border: grey solid 0.01rem;
+  }
+  
